@@ -4,11 +4,15 @@ sudo apt update
 sudo apt install postgresql postgresql-contrib
 sudo systemctl start postgresql.service
 sudo -u postgres psql
+```
 
-postgres=# ALTER USER postgres WITH PASSWORD 'psql1234';
-postgres=# CREATE DATABASE pgllm;
-postgres=# \c pgllm
-pgllm=# CREATE TABLE structured_documents (
+psql
+```
+ALTER USER postgres WITH PASSWORD 'psql1234';
+CREATE DATABASE pgllm;
+\c pgllm
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE TABLE structured_documents (
     id SERIAL PRIMARY KEY,
     heading TEXT NOT NULL,
     content TEXT NOT NULL,
@@ -19,12 +23,9 @@ pgllm=# CREATE TABLE structured_documents (
     ) STORED
 );
 
-pgllm=# CREATE EXTENSION IF NOT EXISTS vector;
+CREATE INDEX search_tsv_idx ON structured_documents USING GIN(search_tsv);
+
 ```
-
-
-
-
 
 ## Setting Up Environment
 ```
